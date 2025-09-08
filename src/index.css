@@ -1,15 +1,28 @@
-body { 
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+body {
+  margin: 0;
+  display: flex;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #4dc0fa;
-  margin: 0;
+  background-color: #0b76a0;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  width: 100%;
-  max-width: 1000px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 10px 2rem;
   text-align: center;
+  background-color: #fcfcfc;
+  box-shadow: 0px 2px 7px 0px #999;
 }

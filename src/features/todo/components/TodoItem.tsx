@@ -3,7 +3,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import WarningIcon from '@mui/icons-material/Warning';
-import type { Todo } from "../core/domain/Todo";
+import type { Todo } from "../../../core/domain/Todo";
+import {
+  todoItemContainerStyles,
+  todoItemDescriptionDisabledStyles,
+  todoItemDescriptionStyles,
+  todoItemTitleDisabledStyles,
+  todoItemTitleStyles
+} from "../styles/TodoItemStyles";
 
 interface Props {
   todo: Todo
@@ -30,25 +37,14 @@ const TodoItem = ({
   return (
     <Box
       key={todo.id}
-      sx={{
-        display: 'flex',
-        border: '1px solid #000',
-        padding: '15px 30px',
-        borderRadius: '10px',
-        alignItems: 'center',
-        gap: '10px',
-        overflow: 'hidden',
-        minHeight: 'fit-content',
-        flexShrink: 0,
-        backgroundColor: (new Date(todo.dueDate) < new Date() && !todo.completed) ? '#ffdada' : '#fff',
-      }}
+      sx={[todoItemContainerStyles, {backgroundColor: (new Date(todo.dueDate) < new Date() && !todo.completed) ? '#ffdada' : '#fff'}]}
     >
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: '10px',
-          width: '600px'
+          flexGrow: 1,
         }}
       >
         <Box
@@ -69,31 +65,11 @@ const TodoItem = ({
             onChange={(e) => setTodoToEdit({...todo, title: e.target.value})}
             disabled={todoToEdit?.id !== todo.id}
             sx={[
-              { width: '70%',
-                '& .MuiInputBase-input': {
-                  fontSize: '18px',
-                  fontWeight: 'bold'
-                },
-              }, 
-              todoToEdit?.id !== todo.id ? {
-              
-                '& .MuiInputBase-input.Mui-disabled': {
-                  color: 'black',
-                  WebkitTextFillColor: 'black',
-                },
-                '& .MuiInput-underline:before': {
-                  borderBottom: 'none',
-                },
-                '& .MuiInput-underline:after': {
-                  borderBottom: 'none',
-                },
-                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                  borderBottom: 'none',
-                },
-                '& .MuiInput-underline.Mui-disabled:before': {
-                  borderBottom: 'none',
-                },
-              } : {}]}
+              todoItemTitleStyles, 
+              todoToEdit?.id !== todo.id ?  todoItemTitleDisabledStyles : {}
+            ]}
+            error={!todo.title}
+            helperText={!todo.title ? "El título es requerido" : ""}
           />
           <Box
             sx={{
@@ -140,33 +116,11 @@ const TodoItem = ({
           onChange={(e) => setTodoToEdit({...todo, description: e.target.value})}
           disabled={todoToEdit?.id !== todo.id}
           sx={[
-            {width: 'auto', fontSize: '8px'}, 
-            todoToEdit?.id !== todo.id ? {
-            
-              '& .MuiInputBase-input.Mui-disabled': {
-                color: 'black',
-                WebkitTextFillColor: 'black',
-                fontSize: '12px',
-              },
-              '& .MuiInput-underline:before': {
-                borderBottom: 'none',
-              },
-              '& .MuiInput-underline:after': {
-                borderBottom: 'none',
-              },
-              '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-                borderBottom: 'none',
-              },
-              '& .MuiInput-underline.Mui-disabled:before': {
-                borderBottom: 'none',
-              },
-            } : {
-              '& .MuiInputBase-input': {
-                color: 'black',
-                WebkitTextFillColor: 'black',
-                fontSize: '12px',
-              },
-            }]}
+            todoItemDescriptionStyles, 
+            todoToEdit?.id !== todo.id ? todoItemDescriptionDisabledStyles : {}
+          ]}
+          error={!todo.description}
+          helperText={!todo.description ? "La descripción es requerida" : ""}
         />
       </Box>
       <Divider orientation="vertical" flexItem />
@@ -178,7 +132,11 @@ const TodoItem = ({
           alignItems: 'center'
         }}
       >
-        <Checkbox checked={todo.completed} onClick={() => onChangeStatus(todo)} disabled={todoToEdit?.id === todo.id || isNew}/>
+        <Checkbox checked={todo.completed} onClick={() => onChangeStatus(todo)} disabled={todoToEdit?.id === todo.id || isNew}
+          sx={{
+            paddingRight: 0,
+          }}  
+        />
         {
           todoToEdit?.id === todo.id ? 
             <SaveIcon onClick={() => onSave(todoToEdit)} sx={{cursor: 'pointer'}}/>
