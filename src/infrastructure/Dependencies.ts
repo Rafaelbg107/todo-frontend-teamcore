@@ -1,13 +1,13 @@
 import { createHttpTodoRepository } from '../adapters/http/HttpTodoRepository'
 import { createTodoUseCases } from '../core/useCases/TodoUseCases'
-import type { CreateTodoRequest } from '../core/domain/Todo'
+import type { CreateTodoRequest, UpdateTodoRequest } from '../core/domain/Todo'
 
 const todoRepository = createHttpTodoRepository()
 
 export const todoUseCases = createTodoUseCases(todoRepository)
 
 export { todoRepository }
-export type { CreateTodoRequest }
+export type { CreateTodoRequest, UpdateTodoRequest }
 
 export const {
   getAllTodos,

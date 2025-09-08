@@ -17,6 +17,12 @@ export interface CreateTodoRequest {
   dueDate: Date
 }
 
+export interface UpdateTodoRequest {
+  title?: string
+  description?: string
+  dueDate?: Date
+}
+
 export const markAsCompleted = (todo: Todo): Todo => ({
   ...todo,
   completed: true,

@@ -1,5 +1,6 @@
-import type { Todo, TodoStatus, CreateTodoRequest } from '../../core/domain/Todo'
+import type { Todo, TodoStatus, CreateTodoRequest, UpdateTodoRequest } from '../../core/domain/Todo'
 import type { TodoRepository } from '../../core/ports/TodoRepository'
+import { generateId } from '../../utils/GeneralUtils'
 
 export const createLocalStorageTodoRepository = (): TodoRepository => {
   const STORAGE_KEY = 'todos'
@@ -21,10 +22,6 @@ export const createLocalStorageTodoRepository = (): TodoRepository => {
       console.error('Error saving to localStorage:', error)
       throw new Error('Failed to save todos to local storage')
     }
-  }
-
-  const generateId = (): string => {
-    return Date.now().toString() + Math.random().toString(36).substr(2, 9)
   }
 
   return {
@@ -60,7 +57,7 @@ export const createLocalStorageTodoRepository = (): TodoRepository => {
       return newTodo
     },
 
-    async update(id: string, todo: Partial<Todo>): Promise<Todo> {
+    async update(id: string, todo: UpdateTodoRequest): Promise<Todo> {
       const todos = getTodosFromStorage()
       const index = todos.findIndex(t => t.id === id)
       

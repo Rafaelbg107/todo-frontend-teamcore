@@ -1,4 +1,6 @@
+import { ThemeProvider } from '@mui/material'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { theme } from '../styles/theme'
 
 function App() {
   const { pathname } = useLocation()
@@ -9,7 +11,9 @@ function App() {
 
   return (
     <main>
-      <Outlet />
+      <ThemeProvider theme={theme}>
+        <Outlet />
+      </ThemeProvider>
     </main>
   )
 }

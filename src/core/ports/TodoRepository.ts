@@ -1,4 +1,4 @@
-import type { Todo, TodoStatus, CreateTodoRequest } from '../domain/Todo'
+import type { Todo, TodoStatus, CreateTodoRequest, UpdateTodoRequest } from '../domain/Todo'
 
 export interface TodoRepository {
   getAll(): Promise<Todo[]>
@@ -9,7 +9,7 @@ export interface TodoRepository {
   
   create(todo: CreateTodoRequest): Promise<Todo>
   
-  update(id: string, todo: Partial<Todo>): Promise<Todo | null>
+  update(id: string, todo: UpdateTodoRequest): Promise<Todo | null>
   
   delete(id: string): Promise<boolean | null>
   

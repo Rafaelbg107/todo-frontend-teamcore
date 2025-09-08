@@ -1,69 +1,88 @@
-# React + TypeScript + Vite
+# Todo Frontend - Hexagonal Architecture
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React Todo application built with Hexagonal Architecture.
 
-Currently, two official plugins are available:
+## 🏗️ Architecture Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project implements **Hexagonal Architecture** to separate business logic from external concerns:
 
-## Expanding the ESLint configuration
+- **Core Domain**: Pure business entities and use cases
+- **Ports**: Interfaces defining how the core interacts with external systems
+- **Adapters**: Implementations connecting the core to specific technologies (HTTP, LocalStorage, React UI)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React 19** - UI framework
+- **TypeScript** - Type safety
+- **Material-UI (MUI)** - UI components
+- **React Router DOM** - Client-side routing
+- **Axios** - HTTP client
+- **Day.js** - Date manipulation
+- **Vite** - Build tool and dev server
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 📋 Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Before running this project, make sure you have:
+
+- **Node.js** (version 18 or higher)
+- **npm** or **pnpm** package manager
+- **Backend API** running on `http://localhost:8000/api` (optional - can use LocalStorage)
+
+## 🚀 Getting Started
+
+### 1. Install Dependencies
+
+Using **npm**:
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Using **pnpm** (recommended):
+```bash
+pnpm install
 ```
+
+### 2. Configure Data Source
+
+The application supports two data sources. Choose one by modifying `src/infrastructure/Dependencies.ts`:
+
+#### Option A: HTTP API (Default)
+```typescript
+const todoRepository = createHttpTodoRepository() // Uses backend API
+```
+
+#### Option B: LocalStorage
+```typescript
+const todoRepository = createLocalStorageTodoRepository() // Uses browser storage
+```
+
+### 3. Start Development Server
+
+```bash
+npm run dev
+# or
+pnpm dev
+```
+
+The application will be available at `http://localhost:5173`
+
+### Expected API Endpoints
+
+The HTTP adapter expects these REST endpoints:
+
+- `GET /todos` - Get all todos
+- `GET /todos?status=pending|complete` - Get todos by status
+- `GET /todos/:id` - Get todo by ID
+- `POST /todos` - Create new todo
+- `PUT /todos/:id` - Update todo
+- `DELETE /todos/:id` - Delete todo
+- `PATCH /todos/:id/complete` - Mark todo as complete
+- `PATCH /todos/:id/pending` - Mark todo as pending
+
+## 📝 License
+
+This project is private and proprietary.
+
+---
+
+**Built with ❤️ using Hexagonal Architecture and React**

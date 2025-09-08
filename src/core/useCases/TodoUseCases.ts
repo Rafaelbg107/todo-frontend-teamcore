@@ -1,6 +1,6 @@
 
-import type { Todo, TodoStatus, CreateTodoRequest } from '../domain/Todo'
-import { markAsCompleted, markAsPending, updateTodo } from '../domain/Todo'
+import type { Todo, TodoStatus, CreateTodoRequest, UpdateTodoRequest } from '../domain/Todo'
+import { updateTodo } from '../domain/Todo'
 import type { TodoRepository } from '../ports/TodoRepository'
 
 export const createTodoUseCases = (todoRepository: TodoRepository) => ({
@@ -20,7 +20,7 @@ export const createTodoUseCases = (todoRepository: TodoRepository) => ({
     return await todoRepository.create(request)
   },
 
-  async updateTodo(id: string, updates: { title?: string; description?: string; dueDate?: Date }): Promise<Todo | null> {
+  async updateTodo(id: string, updates: UpdateTodoRequest): Promise<Todo | null> {
     const existingTodo = await todoRepository.getById(id)
     if (!existingTodo) {
       throw new Error(`Todo with id ${id} not found`)
@@ -36,8 +36,7 @@ export const createTodoUseCases = (todoRepository: TodoRepository) => ({
       throw new Error(`Todo with id ${id} not found`)
     }
 
-    const completedTodo = markAsCompleted(todo)
-    return await todoRepository.update(id, completedTodo)
+    return await todoRepository.markAsComplete(id)
   },
 
   async pendingTodo(id: string): Promise<Todo | null> {
@@ -46,8 +45,7 @@ export const createTodoUseCases = (todoRepository: TodoRepository) => ({
       throw new Error(`Todo with id ${id} not found`)
     }
 
-    const pendingTodo = markAsPending(todo)
-    return await todoRepository.update(id, pendingTodo)
+    return await todoRepository.markAsPending(id)
   },
 
   async deleteTodo(id: string): Promise<boolean | null> {

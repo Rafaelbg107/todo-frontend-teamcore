@@ -1,4 +1,4 @@
-import type { Todo, TodoStatus, CreateTodoRequest } from '../../core/domain/Todo'
+import type { Todo, TodoStatus, CreateTodoRequest, UpdateTodoRequest } from '../../core/domain/Todo'
 import type { TodoRepository } from '../../core/ports/TodoRepository'
 import { useHttpClient } from './useHttpClient'
 
@@ -35,7 +35,7 @@ export const createHttpTodoRepository = (): TodoRepository => {
       return response.data
     },
 
-    async update(id: string, todo: Partial<Todo>): Promise<Todo | null> {
+    async update(id: string, todo: UpdateTodoRequest): Promise<Todo | null> {
       try {
         const response = await httpClient.put<Todo>(`${endpoint}/${id}`, todo)
         return response.data
@@ -50,7 +50,8 @@ export const createHttpTodoRepository = (): TodoRepository => {
     async delete(id: string): Promise<boolean | null> {
       try {
         const response = await httpClient.delete(`${endpoint}/${id}`)
-        return !!response.data
+        // 204 No Content means successful deletion
+        return response.status === 204
       } catch (error: any) {
         if (error.response?.status === 404) {
           return null
